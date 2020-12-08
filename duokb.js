@@ -24,7 +24,7 @@ function addSpace() {
 
 function processKey(e) {
     if (e.code == 'Enter') {
-        this.blur
+        this.blur();
         return;
     }
     if (he && e.code in he) {
