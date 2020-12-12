@@ -33,19 +33,23 @@ var showBoxHasBeenTypedInEvent = new Event('input', {
 
 /** Replace keys with the correct layout if we are set to actively utilize that layout. */
 function processKey(e) {
-    // if that translation table exists and if that key is set to be replaced in that translation table, change it.
-    if (window[languageCode] && e.code in window[languageCode]) {
-        // stop this key from doing what it usually does
-        e.preventDefault();
-        // see where the cursor is at so we can preserve cursor position
-        var startIndex = this.selectionStart;
-        var endIndex = this.selectionEnd;
-        // do the replacement in the box
-        this.value = this.value.substring(0, startIndex) + window[languageCode][e.code] + this.value.substring(endIndex);
-        // let DuoLingo know we have typed in the box 
-        this.dispatchEvent(showBoxHasBeenTypedInEvent);
-        // move the cursor forward
-        this.selectionStart = startIndex + 1;
-        this.selectionEnd = endIndex + 1;
+    try {
+        // if that translation table exists and if that key is set to be replaced in that translation table, change it.
+        if (window[languageCode] && e.code in window[languageCode]) {
+            // stop this key from doing what it usually does
+            e.preventDefault();
+            // see where the cursor is at so we can preserve cursor position
+            var startIndex = this.selectionStart;
+            var endIndex = this.selectionEnd;
+            // do the replacement in the box
+            this.value = this.value.substring(0, startIndex) + window[languageCode][e.code] + this.value.substring(endIndex);
+            // let DuoLingo know we have typed in the box 
+            this.dispatchEvent(showBoxHasBeenTypedInEvent);
+            // move the cursor forward
+            this.selectionStart = startIndex + 1;
+            this.selectionEnd = endIndex + 1;
+        }
+    } catch (ex) {
+        console.log(ex.message);
     }
 }

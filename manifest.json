@@ -2,19 +2,19 @@
     "description": "Changes input for Duolingo without need of switching keyboard layouts.",
     "manifest_version": 2,
     "name": "DuoKB",
-    "version": "0.3",
+    "version": "0.4",
     "homepage_url": "https://github.com/cdberkstresser/DuoKB",
     "icons": {
-        "16": "icons/reader-16.png",
-        "32": "icons/reader-32.png",
-        "48": "icons/reader-48.png",
-        "64": "icons/reader-64.png",
-        "96": "icons/reader-96.png",
-        "128": "icons/reader-128.png"
+        "16": "icons/duokb-16.png",
+        "32": "icons/duokb-32.png",
+        "48": "icons/duokb-48.png",
+        "64": "icons/duokb-64.png",
+        "96": "icons/duokb-96.png",
+        "128": "icons/duokb-128.png"
     },
 
     "browser_action": {
-        "default_icon": "icons/reader-128.png",
+        "default_icon": "icons/duokb-128.png",
         "default_title": "DuoKB"
     },
     "content_scripts": [{
