@@ -11,6 +11,7 @@ window.onload = function() {
     setInterval(load, 200);
     this
 }
+var isShiftDown = false;
 
 /** Set the input correctly as the input boxes change. */
 function load() {
@@ -21,6 +22,7 @@ function load() {
         if (supportedTranslations[language]) {
             languageCode = supportedTranslations[language];
             e.addEventListener("keydown", processKey);
+            e.addEventListener("keyup", handleShiftUp);
         }
     });
 }
@@ -34,6 +36,9 @@ var showBoxHasBeenTypedInEvent = new Event('input', {
 /** Replace keys with the correct layout if we are set to actively utilize that layout. */
 function processKey(e) {
     try {
+        if (e.code == 'ShiftLeft' || e.code == 'ShiftRight' || e.code == 'CapsLock') {
+            isShiftDown = !isShiftDown;
+        }
         // if that translation table exists and if that key is set to be replaced in that translation table, change it.
         if (window[languageCode] && e.code in window[languageCode]) {
             // stop this key from doing what it usually does
@@ -42,7 +47,7 @@ function processKey(e) {
             var startIndex = this.selectionStart;
             var endIndex = this.selectionEnd;
             // do the replacement in the box
-            this.value = this.value.substring(0, startIndex) + window[languageCode][e.code] + this.value.substring(endIndex);
+            this.value = this.value.substring(0, startIndex) + window[languageCode][e.code][isShiftDown ? 0 : 1] + this.value.substring(endIndex);
             // let DuoLingo know we have typed in the box 
             this.dispatchEvent(showBoxHasBeenTypedInEvent);
             // move the cursor forward
@@ -51,5 +56,11 @@ function processKey(e) {
         }
     } catch (ex) {
         console.log(ex.message);
+    }
+}
+
+function handleShiftUp(e) {
+    if (e.code == 'ShiftLeft' || e.code == 'ShiftRight') {
+        isShiftDown = !isShiftDown;
     }
 }
