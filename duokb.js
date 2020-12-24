@@ -6,10 +6,15 @@
 var language = "";
 /** The language code of the language being used.  Ideally we would only use this, but "lang ="" isn't always set. */
 var languageCode = "";
+/** The language code from the URL.  Some boxes don't tell you the language in which to type, and this helps us provide an override. */
+var urlLanguageCodeGuess = "";
+/** The language from the URL.  Some boxes don't tell you the language in which to type, and this helps us provide an override. */
+var urlLanguageGuess = "";
 /** Duolingo seems to be manipulating the same box rather than reloading, so watch it for changes. */
 window.onload = function() {
+    getLanguageCodeFromUrlIfSupported();
+
     setInterval(load, 200);
-    this
 }
 var isShiftDown = false;
 
@@ -21,6 +26,10 @@ function load() {
         //if so and we support the language, set the language code
         if (supportedTranslations[language]) {
             languageCode = supportedTranslations[language];
+            e.addEventListener("keydown", processKey);
+            e.addEventListener("keyup", handleShiftUp);
+        } else if (e.getAttribute('data-test') && e.getAttribute('data-test') == "challenge-text-input") {
+            languageCode = urlLanguageCodeGuess;
             e.addEventListener("keydown", processKey);
             e.addEventListener("keyup", handleShiftUp);
         }
@@ -59,8 +68,19 @@ function processKey(e) {
     }
 }
 
+/** Keep track of shift so we can do upper case or lower case entries.  */
 function handleShiftUp(e) {
     if (e.code == 'ShiftLeft' || e.code == 'ShiftRight') {
         isShiftDown = !isShiftDown;
+    }
+}
+
+/** Try to extract if a language code is indicated in the url that we support. */
+function getLanguageCodeFromUrlIfSupported() {
+    for (const [key, value] of Object.entries(supportedTranslations)) {
+        if (window.location.toString().includes('\/' + value + '\/')) {
+            urlLanguageCodeGuess = value;
+            urlLanguageGuess = key;
+        }
     }
 }
