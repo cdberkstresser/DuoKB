@@ -17,6 +17,7 @@ var supportedTranslations = {
 
 /*
  ***********KEYBOARD TRANSLATION OBJECTS***********
+ The first element is when shift is pressed with the character, and the second element is unshifted.
  */
 
 var el = {
