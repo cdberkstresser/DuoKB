@@ -2,7 +2,7 @@
     "description": "Changes input for Duolingo without need of switching keyboard layouts.",
     "manifest_version": 2,
     "name": "DuoKB",
-    "version": "0.6",
+    "version": "0.8",
     "homepage_url": "https://github.com/cdberkstresser/DuoKB",
     "icons": {
         "16": "icons/duokb-16.png",

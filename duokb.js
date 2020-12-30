@@ -12,14 +12,13 @@ var urlLanguageCodeGuess = "";
 var urlLanguageGuess = "";
 /** Duolingo seems to be manipulating the same box rather than reloading, so watch it for changes. */
 window.onload = function() {
-    getLanguageCodeFromUrlIfSupported();
-
     setInterval(load, 200);
 }
 var isShiftDown = false;
 
 /** Set the input correctly as the input boxes change. */
 function load() {
+    getLanguageCodeFromUrlIfSupported();
     // see if any text boxes or text areas have appeared that we want to translate
     document.querySelectorAll("textarea, input[type='text']").forEach(e => {
         language = e.getAttribute('placeholder') && e.getAttribute('placeholder').startsWith('Type in ') ? e.getAttribute('placeholder').replace('Type in ', '') : '';

@@ -4,5 +4,6 @@
 ## What it does
 This add-on translates keyboard input into non-English character sets without the need of installing that keyboard layout.
 Currently supported languages are:
-Greek
-Hebrew
+1. Greek
+2. Hebrew
+3. Russian
