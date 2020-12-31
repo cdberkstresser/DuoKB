@@ -53,15 +53,16 @@ function processKey(e) {
         if (e.code == 'ShiftLeft' || e.code == 'ShiftRight' || e.code == 'CapsLock') {
             isShiftDown = !isShiftDown;
         }
+
         // if that translation table exists and if that key is set to be replaced in that translation table, change it.
-        if (window[languageCode] && e.code in window[languageCode] && languagesEnabled[language]) {
+        if (eval(languageCode) && e.code in eval(languageCode) && languagesEnabled[language]) {
             // stop this key from doing what it usually does
             e.preventDefault();
             // see where the cursor is at so we can preserve cursor position
             var startIndex = this.selectionStart;
             var endIndex = this.selectionEnd;
             // do the replacement in the box
-            this.value = this.value.substring(0, startIndex) + window[languageCode][e.code][isShiftDown ? 0 : 1] + this.value.substring(endIndex);
+            this.value = this.value.substring(0, startIndex) + eval(languageCode)[e.code][isShiftDown ? 0 : 1] + this.value.substring(endIndex);
             // let DuoLingo know we have typed in the box 
             this.dispatchEvent(showBoxHasBeenTypedInEvent);
             // move the cursor forward

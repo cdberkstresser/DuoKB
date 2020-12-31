@@ -19,7 +19,15 @@ function restore_options() {
     Object.keys(supportedTranslations).forEach(e => {
         var table = document.getElementById('languages');
         var row = table.insertRow(-1);
-        row.innerHTML = "<td>" + e + "</td><td class=\"options\"><input type=checkbox id='" + e + "'></td>"
+        var cellLanguage = row.insertCell(0);
+        var cellCheckBox = row.insertCell(1);
+        var chk = document.createElement('input');
+        chk.setAttribute('type', 'checkbox');
+        chk.setAttribute('id', e);
+
+        cellLanguage.textContent = e;
+        cellCheckBox.className = "options";
+        cellCheckBox.appendChild(chk);
 
         chrome.storage.sync.get({
                 [e]: true
