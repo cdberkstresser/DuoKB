@@ -12,7 +12,6 @@ function save_options() {
                 }, 750);
             });
         })
-
 }
 
 /** Restore the languages that are enabled/disabled to sync storage for the options page. */
