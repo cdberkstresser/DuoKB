@@ -2,7 +2,7 @@
     "description": "Changes input for Duolingo without need of switching keyboard layouts.",
     "manifest_version": 2,
     "name": "DuoKB",
-    "version": "0.8",
+    "version": "0.9",
     "homepage_url": "https://github.com/cdberkstresser/DuoKB",
     "icons": {
         "16": "icons/duokb-16.png",
@@ -12,7 +12,10 @@
         "96": "icons/duokb-96.png",
         "128": "icons/duokb-128.png"
     },
-
+    "options_ui": {
+        "page": "options.html",
+        "open_in_tab": false
+    },
     "browser_action": {
         "default_icon": "icons/duokb-128.png",
         "default_title": "DuoKB"
@@ -23,7 +26,11 @@
         ],
         "js": [
             "duokb.js",
-            "translations.js"
+            "translations.js",
+            "options.js"
         ]
-    }]
+    }],
+    "permissions": [
+        "storage"
+    ]
 }

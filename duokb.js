@@ -10,8 +10,14 @@ var languageCode = "";
 var urlLanguageCodeGuess = "";
 /** The language from the URL.  Some boxes don't tell you the language in which to type, and this helps us provide an override. */
 var urlLanguageGuess = "";
+/** Keep track of whether the user wants to have a language enabled or not.  This allows the user to turn off character replacement for a language while DuoKB is still installed. */
+var languagesEnabled = {};
 /** Duolingo seems to be manipulating the same box rather than reloading, so watch it for changes. */
 window.onload = function() {
+    // load settings
+    loadSettings();
+    // also load settings if the user changes them.
+    chrome.storage.onChanged.addListener(loadSettings);
     setInterval(load, 200);
 }
 var isShiftDown = false;
@@ -22,7 +28,7 @@ function load() {
     // see if any text boxes or text areas have appeared that we want to translate
     document.querySelectorAll("textarea, input[type='text']").forEach(e => {
         language = e.getAttribute('placeholder') && e.getAttribute('placeholder').startsWith('Type in ') ? e.getAttribute('placeholder').replace('Type in ', '') : '';
-        //if so and we support the language, set the language code
+        // if so and we support the language, set the language code
         if (supportedTranslations[language]) {
             languageCode = supportedTranslations[language];
             e.addEventListener("keydown", processKey);
@@ -48,7 +54,7 @@ function processKey(e) {
             isShiftDown = !isShiftDown;
         }
         // if that translation table exists and if that key is set to be replaced in that translation table, change it.
-        if (window[languageCode] && e.code in window[languageCode]) {
+        if (window[languageCode] && e.code in window[languageCode] && languagesEnabled[language]) {
             // stop this key from doing what it usually does
             e.preventDefault();
             // see where the cursor is at so we can preserve cursor position
@@ -82,4 +88,16 @@ function getLanguageCodeFromUrlIfSupported() {
             urlLanguageGuess = key;
         }
     }
+}
+
+/** Get the settings from sync storage for DuoKB. */
+function loadSettings() {
+    Object.keys(supportedTranslations).forEach(e => {
+        chrome.storage.sync.get({
+                [e]: true
+            },
+            function(item) {
+                Object.assign(languagesEnabled, item);
+            });
+    });
 }
