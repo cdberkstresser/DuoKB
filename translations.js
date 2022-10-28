@@ -10,6 +10,7 @@
  ***********SUPPORTED TRANSLATIONS WITH FRIENDLY NAMES***********
  */
 var supportedTranslations = {
+    English: 'en',
     Greek: 'el',
     Hebrew: 'he',
     Russian: 'ru',
@@ -19,6 +20,53 @@ var supportedTranslations = {
 /*
  ***********KEYBOARD TRANSLATION OBJECTS***********
  */
+ var en = {
+    Backquote: ['~', '`'],
+    Digit1: ['!', '1'],
+    Digit2: ['@', '2'],
+    Digit3: ['#', '3'],
+    Digit4: ['$', '4'],
+    Digit5: ['%', '5'],
+    Digit6: ['^', '6'],
+    Digit7: ['&', '7'],
+    Digit8: ['*', '8'],
+    Digit9: ['(', '9'],
+    Digit0: [')', '0'],
+    KeyQ: ['Q', 'q'],
+    KeyW: ['W', 'w'],
+    KeyE: ['E', 'e'],
+    KeyR: ['R', 'r'],
+    KeyT: ['T', 't'],
+    KeyY: ['Y', 'y'],
+    KeyU: ['', 'u'],
+    KeyI: ['I', 'i'],
+    KeyO: ['O', 'o'],
+    KeyP: ['P', 'p'],
+    BracketLeft: ['{', '['],
+    BracketRight: ['}', ']'],
+    Backslash: ['|', '\\'],
+    KeyA: ['A', 'a'],
+    KeyS: ['S', 's'],
+    KeyD: ['D', 'd'],
+    KeyF: ['F', 'f'],
+    KeyG: ['G', 'g'],
+    KeyH: ['H', 'h'],
+    KeyJ: ['J', 'j'],
+    KeyK: ['K', 'k'],
+    KeyL: ['L', 'l'],
+    Semicolon: [':', ';'],
+    KeyZ: ['Z', 'z'],
+    KeyX: ['X', 'x'],
+    KeyC: ['C', 'c'],
+    KeyV: ['V', 'v'],
+    KeyB: ['B', 'b'],
+    KeyN: ['N', 'n'],
+    KeyM: ['M', 'm'],
+    Comma: ['<', ','],
+    Period: ['>', '.'],
+    Slash: ['?', '/'],
+};
+
 
 var el = {
     KeyQ: [';', ';'],

@@ -35,6 +35,7 @@ function load() {
             e.addEventListener("keyup", handleShiftUp);
         } else if (e.getAttribute('data-test') && e.getAttribute('data-test') == "challenge-text-input") {
             languageCode = urlLanguageCodeGuess;
+            language = Object.keys(supportedTranslations).find(key => supportedTranslations[key] == languageCode);
             e.addEventListener("keydown", processKey);
             e.addEventListener("keyup", handleShiftUp);
         }
@@ -55,14 +56,14 @@ function processKey(e) {
         }
 
         // if that translation table exists and if that key is set to be replaced in that translation table, change it.
-        if (eval(languageCode) && e.code in eval(languageCode) && languagesEnabled[language]) {
+        if (window[languageCode] && e.code in window[languageCode] && languagesEnabled[language]) {
             // stop this key from doing what it usually does
             e.preventDefault();
             // see where the cursor is at so we can preserve cursor position
             var startIndex = this.selectionStart;
             var endIndex = this.selectionEnd;
             // do the replacement in the box
-            this.value = this.value.substring(0, startIndex) + eval(languageCode)[e.code][isShiftDown ? 0 : 1] + this.value.substring(endIndex);
+            this.value = this.value.substring(0, startIndex) + window[languageCode][e.code][isShiftDown ? 0 : 1] + this.value.substring(endIndex);
             // let DuoLingo know we have typed in the box 
             this.dispatchEvent(showBoxHasBeenTypedInEvent);
             // move the cursor forward
