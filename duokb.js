@@ -6,14 +6,14 @@
 var language = "";
 /** The language code of the language being used.  Ideally we would only use this, but "lang ="" isn't always set. */
 var languageCode = "";
-/** The language code from the URL.  Some boxes don't tell you the language in which to type, and this helps us provide an override. */
-var urlLanguageCodeGuess = "";
-/** The language from the URL.  Some boxes don't tell you the language in which to type, and this helps us provide an override. */
-var urlLanguageGuess = "";
+/** The language code from the URL or title.  Some boxes don't tell you the language in which to type, and this helps us provide an override. */
+var languageCodeGuess = "";
+/** The language from the URL or title.  Some boxes don't tell you the language in which to type, and this helps us provide an override. */
+var languageGuess = "";
 /** Keep track of whether the user wants to have a language enabled or not.  This allows the user to turn off character replacement for a language while DuoKB is still installed. */
 var languagesEnabled = {};
 /** Duolingo seems to be manipulating the same box rather than reloading, so watch it for changes. */
-window.onload = function() {
+window.onload = function () {
     // load settings
     loadSettings();
     // also load settings if the user changes them.
@@ -24,7 +24,9 @@ var isShiftDown = false;
 
 /** Set the input correctly as the input boxes change. */
 function load() {
-    getLanguageCodeFromUrlIfSupported();
+    if (!getLanguageCodeFromUrlIfSupported()) {
+        getLanguageCodeFromTitleElement();
+    }
     // see if any text boxes or text areas have appeared that we want to translate
     document.querySelectorAll("textarea, input[type='text']").forEach(e => {
         language = e.getAttribute('placeholder') && e.getAttribute('placeholder').startsWith('Type in ') ? e.getAttribute('placeholder').replace('Type in ', '') : '';
@@ -34,7 +36,7 @@ function load() {
             e.addEventListener("keydown", processKey);
             e.addEventListener("keyup", handleShiftUp);
         } else if (e.getAttribute('data-test') && e.getAttribute('data-test') == "challenge-text-input") {
-            languageCode = urlLanguageCodeGuess;
+            languageCode = languageCodeGuess;
             language = Object.keys(supportedTranslations).find(key => supportedTranslations[key] == languageCode);
             e.addEventListener("keydown", processKey);
             e.addEventListener("keyup", handleShiftUp);
@@ -86,19 +88,36 @@ function handleShiftUp(e) {
 function getLanguageCodeFromUrlIfSupported() {
     for (const [key, value] of Object.entries(supportedTranslations)) {
         if (window.location.toString().includes('\/' + value + '\/')) {
-            urlLanguageCodeGuess = value;
-            urlLanguageGuess = key;
+            languageCodeGuess = value;
+            languageGuess = key;
+            return true;
         }
     }
+    return false;
+}
+
+/** Try to extract if a language code is indicated in the country flag. */
+function getLanguageCodeFromTitleElement() {
+    let title = document.querySelector("title");
+    if (title != null) {
+        for (const [key, value] of Object.entries(supportedTranslations)) {
+            if (title.textContent.includes(key)) {
+                languageCodeGuess = value;
+                languageGuess = key;
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 /** Get the settings from sync storage for DuoKB. */
 function loadSettings() {
     Object.keys(supportedTranslations).forEach(e => {
         chrome.storage.sync.get({
-                [e]: true
-            },
-            function(item) {
+            [e]: true
+        },
+            function (item) {
                 Object.assign(languagesEnabled, item);
             });
     });
