@@ -24,24 +24,26 @@ var isShiftDown = false;
 
 /** Set the input correctly as the input boxes change. */
 function load() {
+    // capture the input box so that we can replace characters
+    let inputText = document.querySelector("textarea[placeholder], input[type='text'][placeholder]");
+    
     if (!getLanguageCodeFromUrlIfSupported()) {
         getLanguageCodeFromTitleElement();
     }
+    
     // see if any text boxes or text areas have appeared that we want to translate
-    document.querySelectorAll("textarea, input[type='text']").forEach(e => {
-        language = e.getAttribute('placeholder') && e.getAttribute('placeholder').startsWith('Type in ') ? e.getAttribute('placeholder').replace('Type in ', '') : '';
-        // if so and we support the language, set the language code
-        if (supportedTranslations[language]) {
-            languageCode = supportedTranslations[language];
-            e.addEventListener("keydown", processKey);
-            e.addEventListener("keyup", handleShiftUp);
-        } else if (e.getAttribute('data-test') && e.getAttribute('data-test') == "challenge-text-input") {
-            languageCode = languageCodeGuess;
-            language = Object.keys(supportedTranslations).find(key => supportedTranslations[key] == languageCode);
-            e.addEventListener("keydown", processKey);
-            e.addEventListener("keyup", handleShiftUp);
-        }
-    });
+    language = inputText?.getAttribute('placeholder').replace('Type in ', '') ?? '';
+    // if so and we support the language, set the language code
+    if (supportedTranslations[language]) {
+        languageCode = supportedTranslations[language];
+        inputText.addEventListener("keydown", processKey);
+        inputText.addEventListener("keyup", handleShiftUp);
+    } else if (inputText && inputText.getAttribute('data-test') && inputText.getAttribute('data-test') == "challenge-text-input") {
+        languageCode = languageCodeGuess;
+        language = Object.keys(supportedTranslations).find(key => supportedTranslations[key] == languageCode);
+        inputText.addEventListener("keydown", processKey);
+        inputText.addEventListener("keyup", handleShiftUp);
+    }
 }
 
 /** Set up an event to prevent the last word typed from being overwritten on submit and show DuoLingo that we have typed something in the box since we are suppressing normal behavior of input keys. */
